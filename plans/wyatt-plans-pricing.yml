@@ -1,0 +1,25 @@
+generated: '2026-09-04'
+method: probed
+source: 'Probe of https://wyattcorp.com and https://drforhair.co.kr, 2026-09-04.'
+plan_count: 0
+note: >-
+  Wyatt publishes no API plans, tiers or developer pricing of any kind, because it sells no API.
+  Its published prices are retail prices for shampoo and scalp-care products on the Dr.FORHAIR
+  storefront, which are product prices, not API plans, and are deliberately NOT recorded here as
+  tiers. The one agent-callable surface is the Cafe24-operated storefront MCP endpoint, included
+  in the merchant's Cafe24 subscription rather than sold by Wyatt. plan_count 0 is an honest
+  measurement, not a gap in the search.
+plans: []
+evidence:
+- url: https://wyattcorp.com/pricing
+  status: 200
+  verdict: bot-challenge catch-all page, not a pricing page
+- url: https://drforhair.co.kr/pricing
+  status: 404
+- url: https://drforhair.co.kr/.well-known/api-catalog
+  status: 404
+consumer_pricing:
+  published: true
+  kind: retail product pricing
+  url: https://drforhair.co.kr/
+  note: Recorded for context only; not an API plan and not counted.

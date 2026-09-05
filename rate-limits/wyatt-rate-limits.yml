@@ -1,0 +1,40 @@
+generated: '2026-09-04'
+method: probed
+source: 'Live responses from https://drforhair2024.cafe24api.com/api/mcp, 2026-09-04.'
+limit_count: 0
+note: >-
+  No rate limits are published by Wyatt, and none were signalled on the wire. Every response
+  observed during discovery — initialize, tools/list, resources/list, prompts/list and the
+  unsessioned 400 — was inspected for rate-limit headers and carried none. limit_count 0 records
+  a measured absence of the runtime signal, not an unsearched gap.
+rate_limits: []
+response_headers:
+  observed: []
+  checked:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  - RateLimit-Limit
+  - RateLimit-Remaining
+  - RateLimit-Reset
+  - RateLimit-Policy
+  - Retry-After
+  result: none present on any response
+exhaustion_status: unknown
+headers_present_instead:
+  note: >-
+    Responses carry Cafe24 edge headers (x-reqid, x-hurl, x-via, x-cache, x-hits, x-hrpcs-signal).
+    None of these convey a quota, and they should not be read as a rate-limit signal.
+evidence:
+- url: https://drforhair2024.cafe24api.com/api/mcp
+  status: 200
+  method: POST initialize
+  verdict: no rate-limit headers
+- url: https://drforhair2024.cafe24api.com/api/mcp
+  status: 400
+  method: POST tools/list without session
+  verdict: no rate-limit headers, no Retry-After
+push_to_provider: >-
+  An agent calling this storefront has no way to know its budget or to back off correctly. Even a
+  single documented per-token limit plus RateLimit-* response headers would make the surface
+  safely automatable.

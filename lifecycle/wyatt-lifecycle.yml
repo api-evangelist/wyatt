@@ -1,0 +1,49 @@
+generated: '2026-09-04'
+method: probed
+source: 'Probe of every Wyatt-controlled host plus the tenant API host, 2026-09-04.'
+note: >-
+  Wyatt publishes no versioning policy, no deprecation policy, no SLA, no status page and no
+  changelog for any API surface. This is expected: Wyatt is a beauty and personal-care company,
+  and its one agent-callable surface is operated by Cafe24. No StatusPage or Deprecation pointer
+  is emitted, because the artifact records their ABSENCE.
+status_page:
+  published: false
+  url: null
+  evidence:
+  - url: https://wyattcorp.com/status
+    status: 200
+    verdict: bot-challenge catch-all, not a status page
+  - url: https://drforhair.co.kr/status
+    status: 404
+  note: >-
+    Cafe24 runs platform status communications for its merchants; Wyatt does not publish one of
+    its own, and a platform status page is not Wyatt's artifact to claim.
+deprecation_policy:
+  published: false
+  sunset_header: not observed
+  deprecation_header: not observed
+  rfc8594: false
+changelog:
+  published: false
+  detail: >-
+    The Dr.FORHAIR storefront runs a 공지사항 (announcements) board at
+    https://drforhair.co.kr/board/free/list.html?board_no=1, but it carries retail promotions and
+    shipping notices, not API change entries. It is not registered as a ChangeLog.
+sla:
+  published: false
+versioning:
+  api_version: v2 (Cafe24 OAuth endpoint path)
+  mcp_protocol_version: '2025-06-18'
+  scheme: undocumented
+  policy: none published
+support:
+  channel: storefront customer service board
+  url: https://drforhair.co.kr/board/index.html
+  phone: 1670-5875
+  hours: Weekdays 09:00-17:00 KST, lunch 12:00-13:00, closed weekends and holidays
+  email: df@wyattcorp.com
+  note: This is retail customer service, not developer support. Wyatt has no developer channel.
+deprecated_operations: []
+push_to_provider: >-
+  The single highest-value operational artifact Wyatt could publish is an RFC 9116 security.txt;
+  a status page and deprecation policy are Cafe24's to provide for the shared platform.

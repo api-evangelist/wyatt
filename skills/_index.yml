@@ -1,0 +1,26 @@
+generated: '2026-09-04'
+method: generated
+source: mcp/wyatt-mcp-tools.json
+note: >-
+  Two skills, both grounded in the six tool names and parameter names returned by a live
+  tools/list against Wyatt's storefront MCP endpoint on 2026-09-04. No operation, parameter or
+  policy statement in either skill was invented; where the surface publishes nothing (rate limits,
+  refunds, idempotency) the skill says so explicitly rather than filling the gap. There is no
+  OpenAPI to ground skills in, so the MCP tool manifest is the contract they are written against.
+api: Dr.FORHAIR Storefront MCP Server
+endpoint: https://drforhair2024.cafe24api.com/api/mcp
+skill_count: 2
+skills:
+- name: wyatt-storefront-shopping
+  file: wyatt-storefront-shopping.md
+  description: Search the catalog, inspect variants, and produce a checkout URL.
+  operations: [search-products, search-products-detail, create-checkout-url]
+  write_operations: [create-checkout-url]
+- name: wyatt-order-management
+  file: wyatt-order-management.md
+  description: List and inspect the shopper's orders, and cancel one while it is still unpaid.
+  operations: [search-customer-orders, search-customer-order-detail, cancel-unpaid-order]
+  write_operations: [cancel-unpaid-order]
+coverage:
+  tools_total: 6
+  tools_covered: 6

@@ -1,0 +1,42 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  Searched registry.npmjs.org, pypi.org, api.github.com and the Wyatt/Dr.FORHAIR web properties
+  on 2026-09-04.
+package_count: 0
+official_count: 0
+packages: []
+note: >-
+  Wyatt ships no client libraries. It has no SDK, no CLI and no published code of any kind, which
+  is the expected result for a consumer beauty brand with no developer program. No SDKs pointer is
+  emitted.
+registries_searched:
+- registry: npm
+  query: ['wyatt', 'wyattcorp', 'drforhair']
+  result: >-
+    No first-party package. The npm names that match are unrelated third-party work — `wyatt`
+    (a Titanium mustache helper) and `wyatt-mcp` (a Shopify theme tool by an unrelated author).
+    Neither is Wyatt Corp's, and neither is recorded.
+- registry: pypi
+  query: ['wyatt', 'drforhair']
+  result: >-
+    `drforhair` 404s. `wyatt` exists but is an unrelated third-party project, not Wyatt Corp's.
+- registry: [maven, nuget, rubygems, packagist, crates.io, pkg.go.dev]
+  result: not searched individually — no evidence anywhere on Wyatt's surface points at a client
+    library in any language, so a per-registry sweep had no lead to follow.
+github:
+  org: https://github.com/Wyatt-corp
+  status: 200
+  public_repos: 1
+  repo: Wyatt-corp/api_test
+  repo_state: empty (git tree returns HTTP 409 "Git Repository is empty")
+  attribution: unconfirmed
+  attribution_note: >-
+    The org is named "Wyatt", located "Korea, South" and was created 2026-02-03, which is
+    consistent with this company, but it carries no description, no linked website and one empty
+    repository. That is not enough to attribute it to Wyatt Corp with confidence, so NO
+    GitHubOrganization pointer is emitted. Recorded here as a lead to confirm rather than a claim.
+platform_sdks_not_claimed: >-
+  Cafe24 publishes client libraries and an admin MCP server for its own platform. Those are
+  Cafe24's packages, not Wyatt's, and are excluded on the same operator-attribution rule that
+  marks the MCP surface x-operator tenant.

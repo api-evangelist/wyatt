@@ -1,0 +1,83 @@
+# Wyatt
+
+> Wyatt Corp. (주식회사 와이어트) is a South Korean beauty and personal-care company in Gangnam,
+> Seoul. It owns the Dr.FORHAIR scalp- and hair-care brand along with UNOVE and Tangle Angel, and
+> built and operated Kakao Hair Shop, the salon-booking service inside KakaoTalk. Wyatt sells no
+> API and runs no developer program. It has exactly one machine-readable, agent-callable surface:
+> a Model Context Protocol server attached to its Dr.FORHAIR direct-to-consumer storefront.
+
+Generated 2026-09-04 by API Evangelist from probed artifacts in this repository. This file is a
+third-party profile; Wyatt does not publish an llms.txt of its own
+(https://drforhair.co.kr/llms.txt returns 404).
+
+## What is actually callable
+
+- [Dr.FORHAIR Storefront MCP Server](https://drforhair2024.cafe24api.com/api/mcp): Live, remote,
+  streamable-HTTP MCP server, protocol 2025-06-18. Six tools: search-products,
+  search-products-detail, create-checkout-url, search-customer-orders,
+  search-customer-order-detail, cancel-unpaid-order. `initialize` and `tools/list` answer
+  anonymously; every `tools/call` requires an OAuth 2.1 bearer token. Tool descriptions and the
+  catalog are in Korean.
+
+## Who operates it
+
+The server identifies itself as `cafe24-mcp-server` 1.0.0. It is the Cafe24 commerce platform's
+agentic-commerce runtime, provisioned per merchant on the tenant host
+`drforhair2024.cafe24api.com`. Wyatt owns the shop, the catalog and the orders, and advertises the
+endpoint from its own domain — but Wyatt did not author the tool surface. The same six tools
+appear on every Cafe24 tenant with the feature enabled. Registered as `x-operator: tenant`.
+
+## Authentication
+
+- OAuth 2.0 authorization code + PKCE (S256), refresh tokens, revocation endpoint.
+- OpenID Connect discovery, RS256 ID tokens, JWKS, userinfo.
+- Discovery documents served from Wyatt's own domain:
+  - https://drforhair.co.kr/.well-known/openid-configuration
+  - https://drforhair.co.kr/.well-known/oauth-authorization-server
+  - https://drforhair.co.kr/.well-known/oauth-protected-resource
+- Issuer and all endpoints live on https://drforhair2024.cafe24api.com.
+- Two scope vocabularies are published and they do not agree: the authorization server advertises
+  UCP scopes (`dev.ucp.shopping.*`), while the MCP resource is guarded by Cafe24's own
+  `mall.read_customer_order` / `mall.write_customer_order`.
+
+## What an agent should know before acting
+
+- No idempotency key, on any operation.
+- No dry-run or preview mode.
+- No rate-limit headers and no published limits. You cannot see your budget.
+- Errors are bare `{"error":"..."}` JSON, not RFC 9457 problem+json.
+- `create-checkout-url` returns a URL for a human to complete. It does not place an order.
+- `cancel-unpaid-order` is the ONLY reversal, and it works only while the order is unpaid. There
+  is no refund or post-payment cancellation tool, and no published refund window.
+- Customer order history is reachable for 90 days at most.
+
+## What Wyatt does not publish
+
+No OpenAPI, no AsyncAPI, no GraphQL, no webhooks, no developer portal, no API reference, no
+getting-started guide, no SDK or CLI, no changelog, no status page, no deprecation policy, no
+security.txt, no agent card, no trust center or certification page, and no API pricing.
+
+## Company links
+
+- [Wyatt Corp.](https://wyattcorp.com/): Corporate site. Behind a JavaScript cookie challenge that
+  returns HTTP 200 for every path; not machine-readable.
+- [Dr.FORHAIR storefront](https://drforhair.co.kr/): The brand storefront, on Cafe24.
+- [Terms of service](https://drforhair.co.kr/member/agreement.html)
+- [Privacy policy](https://drforhair.co.kr/member/privacy.html)
+- [Sign up](https://drforhair.co.kr/member/join.html)
+- [Customer service](https://drforhair.co.kr/board/index.html): Retail support, not developer
+  support. 1670-5875, weekdays 09:00-17:00 KST. df@wyattcorp.com
+
+## Artifacts in this repository
+
+- mcp/wyatt-mcp.yml — MCP manifest, deployment block, verbatim tools/list
+- authentication/wyatt-authentication.yml — OAuth/OIDC profile
+- scopes/wyatt-scopes.yml — both published scope vocabularies
+- conformance/wyatt-conformance.yml — standards conformance, UCP domain signature
+- conventions/wyatt-conventions.yml — idempotency, reversibility, pagination, errors
+- data-model/wyatt-data-model.yml — entity graph derived from tool schemas
+- errors/wyatt-problem-types.yml — observed errors only
+- lifecycle/wyatt-lifecycle.yml — recorded absences
+- well-known/wyatt-well-known.yml — full probe log across five hosts
+- security/ — domain security probe, vulnerability disclosure (none)
+- skills/ — two agent skills grounded in the live tool manifest

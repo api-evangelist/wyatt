@@ -1,0 +1,1 @@
+{"jsonrpc":"2.0","id":1,"result":{"capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"listChanged":false,"subscribe":false},"tools":{"listChanged":false}},"serverInfo":{"name":"cafe24-mcp-server","version":"1.0.0"},"protocolVersion":"2025-06-18"}}

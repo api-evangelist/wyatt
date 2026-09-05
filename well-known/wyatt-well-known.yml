@@ -1,0 +1,197 @@
+generated: '2026-09-04'
+method: probed
+source: 'Direct HTTP probe of the named /.well-known/ path list on every host this record knows.'
+note: >-
+  Two of the four hosts probed are Wyatt-controlled and answer honestly. drforhair.co.kr (and www)
+  serve a REAL OIDC discovery document, an RFC 8414 authorization-server document and an RFC 9728
+  protected-resource document — the last of which is what led to Wyatt's live MCP endpoint. These
+  documents are PLATFORM-AUTHORED: the issuer is https://drforhair2024.cafe24api.com, Wyatt's
+  tenant on the Cafe24 commerce platform, and service_documentation points at
+  developers.cafe24.com. They are served from Wyatt's own registrable domain for Wyatt's own shop,
+  so they are recorded here, but the authorization server is Cafe24's, not Wyatt-operated.
+  wyattcorp.com and www.wyattcorp.com are behind a slowAES JavaScript cookie challenge (cupid.js)
+  that answers HTTP 200 with a ~780-byte challenge page for EVERY path, including the negative
+  control. No document was read from either host; per the soft-200 rule those rows are misses,
+  not hits, and no pointer is claimed on their behalf.
+path_echo_control: passed
+hosts:
+- host: https://drforhair.co.kr
+  operator: wyatt
+  hit_count: 3
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: wyatt-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: wyatt-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: wyatt-oauth-protected-resource.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/wyatt-negative-control-7f3ab91c.json
+    status: 404
+    note: negative control — correctly absent
+- host: https://www.drforhair.co.kr
+  operator: wyatt
+  hit_count: 3
+  path_echo_control: passed
+  note: Identical byte-for-byte to the apex host; documents saved once, from the apex.
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: wyatt-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: wyatt-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: wyatt-oauth-protected-resource.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/wyatt-negative-control-7f3ab91c.json
+    status: 404
+    note: negative control — correctly absent
+- host: https://drforhair2024.cafe24api.com
+  operator: cafe24
+  hit_count: 3
+  path_echo_control: passed
+  note: >-
+    Wyatt's tenant host on the Cafe24 platform, named as the issuer and as the MCP resource by the
+    documents served on drforhair.co.kr. Probed because a fetched discovery document named it.
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: wyatt-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: wyatt-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: wyatt-oauth-protected-resource.json
+  - path: /api/v2/.well-known/jwks.json
+    status: 200
+    note: JWKS named by jwks_uri; keys not mirrored into the repo.
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/wyatt-negative-control-7f3ab91c.json
+    status: 404
+    note: negative control — correctly absent
+- host: https://wyattcorp.com
+  operator: wyatt
+  hit_count: 0
+  soft_404_control:
+    path: /.well-known/wyatt-negative-control-7f3ab91c.json
+    status: 200
+    bytes: 809
+    verdict: >-
+      Catch-all. Every path, real or invented, returns the same slowAES cookie-challenge page.
+      No document is readable; all rows below are misses.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    note: bot-challenge HTML, not a document — miss
+  - path: /.well-known/openid-configuration
+    status: 200
+    note: bot-challenge HTML, not a document — miss
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    note: bot-challenge HTML, not a document — miss
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    note: bot-challenge HTML, not a document — miss
+  - path: /.well-known/api-catalog
+    status: 200
+    note: bot-challenge HTML, not a document — miss
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    note: bot-challenge HTML, not a document — miss
+  - path: /.well-known/apis.json
+    status: 200
+    note: bot-challenge HTML, not a document — miss
+  - path: /apis.json
+    status: 200
+    note: bot-challenge HTML, not a document — miss
+  - path: /apis.yml
+    status: 200
+    note: bot-challenge HTML, not a document — miss
+  - path: /.well-known/aauth-resource.json
+    status: 200
+    note: bot-challenge HTML, not a document — miss
+  - path: /.well-known/agent-card.json
+    status: 200
+    note: bot-challenge HTML, not a document — miss
+  - path: /.well-known/agent.json
+    status: 200
+    note: bot-challenge HTML, not a document — miss
+- host: https://www.wyattcorp.com
+  operator: wyatt
+  hit_count: 0
+  soft_404_control:
+    path: /.well-known/wyatt-negative-control-7f3ab91c.json
+    status: 200
+    bytes: 813
+    verdict: Catch-all bot challenge, same as the apex host. All rows are misses.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    note: bot-challenge HTML, not a document — miss
+  - path: /.well-known/openid-configuration
+    status: 200
+    note: bot-challenge HTML, not a document — miss
+  - path: /.well-known/agent-card.json
+    status: 200
+    note: bot-challenge HTML, not a document — miss
+  - path: /.well-known/agent.json
+    status: 200
+    note: bot-challenge HTML, not a document — miss

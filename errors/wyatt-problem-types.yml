@@ -1,0 +1,35 @@
+generated: '2026-09-04'
+method: probed
+source: https://drforhair2024.cafe24api.com/api/mcp
+note: >-
+  There is no OpenAPI to derive 4xx/5xx responses from and Wyatt publishes no error reference.
+  This catalog records only errors actually OBSERVED on the wire during discovery. It is
+  deliberately short: inventing a plausible error registry for a surface with no published one is
+  exactly the fabrication this pipeline forbids.
+format: bare-json
+format_detail: '{"error": "<message>"} — NOT RFC 9457 application/problem+json.'
+envelope:
+  field: error
+  type: string
+  content_type: application/json; charset=utf-8
+problem_types:
+- id: session-id-required
+  status: 400
+  title: Session ID required
+  body: '{"error":"Session ID required"}'
+  observed: true
+  cause: >-
+    A JSON-RPC method other than initialize was sent without the mcp-session-id header.
+  remediation: >-
+    POST an initialize request, read mcp-session-id from the response headers, send
+    notifications/initialized, then replay the call with that header.
+  evidence: 'POST https://drforhair2024.cafe24api.com/api/mcp {"method":"tools/list"} without a session'
+unobserved:
+  note: >-
+    No authentication failure, rate-limit, validation or server error was provoked. The catalog
+    does not call tools on live commerce surfaces, so the error shapes for tools/call —
+    including whatever is returned for a missing or expired bearer token — were not measured and
+    are not listed. Absence here means unmeasured, not absent.
+push_to_provider: >-
+  Neither Wyatt nor the tenant surface publishes an error reference. An agent integrating this
+  storefront cannot tell a retryable failure from a permanent one without provoking each case.

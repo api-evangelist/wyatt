@@ -1,0 +1,58 @@
+generated: '2026-09-04'
+method: probed
+source: https://drforhair.co.kr/.well-known/openid-configuration
+docs: https://developers.cafe24.com/app/front/app/develop/oauth
+note: >-
+  Read verbatim from scopes_supported in the two discovery documents Wyatt's domain serves. Two
+  distinct scope vocabularies are published, and they do not overlap: the OIDC/authorization-server
+  document advertises UCP-namespaced shopping scopes, while the RFC 9728 protected-resource
+  document guarding the MCP endpoint advertises Cafe24's own mall.* scopes. Both are recorded as
+  published; no scope was inferred.
+operator: cafe24
+scope_count: 8
+vocabularies:
+- name: ucp-shopping
+  namespace: dev.ucp.shopping
+  standard: Universal Commerce Protocol (UCP)
+  advertised_by: /.well-known/openid-configuration and /.well-known/oauth-authorization-server
+  scopes:
+  - name: openid
+    description: OIDC — request an ID token for the shopper.
+  - name: dev.ucp.shopping.checkout:manage
+    description: Create and manage a checkout for the shopper.
+    write: true
+  - name: dev.ucp.shopping.cart:manage
+    description: Create and manage the shopper's cart.
+    write: true
+  - name: dev.ucp.shopping.order:read
+    description: Read the shopper's orders.
+    write: false
+  - name: dev.ucp.shopping.catalog.search:read
+    description: Search the storefront catalog.
+    write: false
+  - name: dev.ucp.shopping.catalog.lookup:read
+    description: Look up a specific catalog item.
+    write: false
+- name: cafe24-mall
+  namespace: mall
+  advertised_by: /.well-known/oauth-protected-resource
+  guards: https://drforhair2024.cafe24api.com/api/mcp
+  scopes:
+  - name: openid
+    description: OIDC — request an ID token for the shopper.
+  - name: mall.read_customer_order
+    description: Read the authenticated customer's orders. Backs search-customer-orders and
+      search-customer-order-detail.
+    write: false
+  - name: mall.write_customer_order
+    description: Write to the authenticated customer's orders. Backs cancel-unpaid-order.
+    write: true
+divergence_note: >-
+  The scopes guarding the live MCP resource (mall.*) are NOT the scopes advertised on the
+  authorization-server metadata (dev.ucp.shopping.*). An agent reading only the OIDC document
+  would request scopes the MCP resource does not name. Recorded as observed; not reconciled,
+  because reconciling it would require guessing.
+x-evidence:
+  fetched: '2026-09-04'
+  openid_configuration_status: 200
+  oauth_protected_resource_status: 200

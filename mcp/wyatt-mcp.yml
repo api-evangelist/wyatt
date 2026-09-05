@@ -1,0 +1,113 @@
+generated: '2026-09-04'
+method: probed
+source: https://drforhair2024.cafe24api.com/api/mcp
+discovery: >-
+  Found from Wyatt's own domain: https://drforhair.co.kr/.well-known/oauth-protected-resource
+  names "resource": "https://drforhair2024.cafe24api.com/api/mcp". Confirmed by an anonymous
+  MCP initialize + tools/list handshake on 2026-09-04.
+name: Dr.FORHAIR Storefront MCP Server
+status: live
+authorship: platform
+operator: Cafe24 Corp.
+operator_note: >-
+  The server identifies itself as serverInfo.name "cafe24-mcp-server" v1.0.0. It is the Cafe24
+  commerce platform's agentic-commerce runtime, provisioned per merchant on a tenant subdomain.
+  Wyatt owns the shop (tenant "drforhair2024") and the products the tools return, and advertises
+  the endpoint from its own registrable domain, but Wyatt did not author the tool surface — the
+  same six tools appear on every Cafe24 tenant that has the feature enabled. Recorded per the
+  platform-vs-provider authorship rule; do not read this as Wyatt shipping an MCP server of its
+  own design.
+deployment:
+  mode: remote
+  endpoint: https://drforhair2024.cafe24api.com/api/mcp
+  transport: streamable-http
+  auth: oauth
+  verified: probed
+server_info:
+  name: cafe24-mcp-server
+  version: 1.0.0
+  protocol_version: '2025-06-18'
+  capabilities:
+    tools:
+      listChanged: false
+    resources:
+      listChanged: false
+      subscribe: false
+    prompts:
+      listChanged: false
+    experimental: {}
+introspection:
+  anonymous_initialize: true
+  anonymous_tools_list: true
+  session_required: true
+  session_header: mcp-session-id
+  note: >-
+    tools/list without a session returns HTTP 400 {"error":"Session ID required"}. After an
+    initialize handshake the full tool set — including complete inputSchemas — is returned
+    anonymously. Calling a tool requires an OAuth 2.1 bearer token; the catalog did not attempt
+    any tools/call.
+  files:
+    tools: wyatt-mcp-tools.json
+    resources: wyatt-mcp-resources.json
+    prompts: wyatt-mcp-prompts.json
+    initialize: wyatt-mcp-initialize.json
+tool_count: 6
+tools:
+- name: search-products
+  category: catalog
+  write: false
+  summary: Search the storefront catalog by product name, with optional situational tag, price
+    floor/ceiling, sort field, sort direction and result limit.
+  required: [product_name]
+  parameters: [product_name, product_tag, price_min, price_max, sort, order, limit]
+- name: search-products-detail
+  category: catalog
+  write: false
+  summary: Retrieve the detail record for one product number, optionally expanding variants with
+    per-option surcharge and option axes.
+  required: [product_no]
+  parameters: [product_no, shop_no, variants_verbose]
+- name: create-checkout-url
+  category: checkout
+  write: true
+  summary: Generate a checkout URL for a given product variant and quantity. Produces a URL for a
+    human to complete; it does not itself place an order.
+  required: [product_no, variant_code, quantity]
+  parameters: [product_no, variant_code, quantity]
+- name: search-customer-orders
+  category: orders
+  write: false
+  summary: List the authenticated customer's orders over a 1-90 day window with limit/offset paging.
+  required: []
+  parameters: [period_days, limit, offset, shop_no]
+- name: search-customer-order-detail
+  category: orders
+  write: false
+  summary: Retrieve one order by order_id (format YYYYMMDD-NNNNNNN).
+  required: [order_id]
+  parameters: [order_id, shop_no]
+- name: cancel-unpaid-order
+  category: orders
+  write: true
+  reversal_of: create-checkout-url
+  summary: Immediately cancel an order that is still in the pre-payment state.
+  required: [order_id]
+  parameters: [order_id, shop_no]
+resources:
+- uri: ui://widget/product-list.html
+  name: Product List Template
+- uri: ui://widget/product-detail.html
+  name: Product Detail Template
+prompts_count: 6
+prompts: [search-products, search-products-detail, create-checkout-url, search-customer-orders,
+  search-customer-order-detail, cancel-unpaid-order]
+language_note: >-
+  Every tool and prompt description is written in Korean. An agent operating this surface must be
+  able to read Korean tool descriptions, and the catalog it returns is the Korean-language
+  Dr.FORHAIR storefront.
+x-evidence:
+  fetched: '2026-09-04'
+  initialize_status: 200
+  tools_list_status: 200
+  tools_list_unauthenticated_status: 400
+  protected_resource_doc: https://drforhair.co.kr/.well-known/oauth-protected-resource

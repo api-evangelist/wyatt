@@ -1,0 +1,82 @@
+generated: '2026-09-04'
+method: derived
+source: mcp/wyatt-mcp-tools.json
+note: >-
+  Derived from the inputSchemas of the six live MCP tools. There is no OpenAPI, so there are no
+  $ref graphs or response schemas to read: this model captures only the entities and reference
+  fields that the tool INPUTS prove exist. Response shapes were not observed, because the catalog
+  does not call tools on a live commerce surface. Attributes a tool does not accept are absent
+  here even where they obviously exist in the underlying store.
+operator: cafe24
+entities:
+- name: Product
+  identifier: product_no
+  identifier_type: integer
+  attributes_referenced: [product_name, product_tag, price, shop_no]
+  operations: [search-products, search-products-detail, create-checkout-url]
+  note: Searchable by name, situational tag and price range; sortable and limitable.
+- name: Variant
+  identifier: variant_code
+  identifier_type: string
+  attributes_referenced: [additional_amount, option_axes]
+  operations: [search-products-detail, create-checkout-url]
+  note: >-
+    Exposed only when search-products-detail is called with variants_verbose true. variant_code is
+    REQUIRED to create a checkout URL, so a variant lookup is a mandatory step in the buy flow.
+- name: Order
+  identifier: order_id
+  identifier_type: string
+  identifier_format: YYYYMMDD-NNNNNNN
+  attributes_referenced: [shop_no, payment_state]
+  operations: [search-customer-orders, search-customer-order-detail, cancel-unpaid-order]
+  note: >-
+    Retrievable only within a 1-90 day window. Carries a payment state that gates cancellation.
+- name: Customer
+  identifier: implicit
+  identifier_source: OAuth bearer token subject
+  attributes_referenced: [mall.name, mall.email, mall.gender, mall.birthdate, mall.phone_number,
+    mall.address]
+  operations: [search-customer-orders, search-customer-order-detail, cancel-unpaid-order]
+  note: >-
+    Never passed as a parameter — the customer is whoever the token represents. The attribute list
+    is the OIDC claims_supported set from the discovery document, not a tool schema.
+- name: Shop
+  identifier: shop_no
+  identifier_type: integer
+  default: 1
+  operations: [search-products-detail, search-customer-orders, search-customer-order-detail,
+    cancel-unpaid-order]
+  note: Multi-mall tenancy discriminator. Wyatt's Dr.FORHAIR storefront is shop 1.
+relationships:
+- from: Product
+  to: Variant
+  kind: has_many
+  via: variant_code
+- from: Product
+  to: Shop
+  kind: belongs_to
+  via: shop_no
+- from: Order
+  to: Customer
+  kind: belongs_to
+  via: OAuth token subject (implicit)
+- from: Order
+  to: Shop
+  kind: belongs_to
+  via: shop_no
+- from: Order
+  to: Variant
+  kind: has_many
+  via: inferred from create-checkout-url taking (product_no, variant_code, quantity)
+  confidence: low
+  note: >-
+    The order-to-line-item edge is NOT observable from the tool inputs; it is inferred from the
+    checkout parameters and is marked low confidence rather than asserted.
+identifier_prefixes:
+  order_id: >-
+    Date-prefixed sequence, e.g. 20260101-0000001. The date prefix is the only structured
+    identifier convention on the surface.
+not_derivable:
+  - Response field names and types (no tools/call was made).
+  - Any entity that has no tool input referencing it — carts, addresses, payments, shipments and
+    reviews all certainly exist in the store, and none is addressable through this surface.

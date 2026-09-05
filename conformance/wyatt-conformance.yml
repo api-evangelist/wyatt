@@ -1,0 +1,91 @@
+generated: '2026-09-04'
+method: probed
+source: >-
+  https://drforhair.co.kr/.well-known/openid-configuration,
+  https://drforhair.co.kr/.well-known/oauth-protected-resource,
+  MCP initialize on https://drforhair2024.cafe24api.com/api/mcp
+note: >-
+  Every entry below is asserted from a document actually fetched, not from a marketing claim.
+  The conforming implementation is Cafe24's platform running under Wyatt's tenant; Wyatt is the
+  adopter, not the author. Nothing here is inferred from prose.
+operator: cafe24
+conformance:
+- id: oauth2
+  conforms: true
+  detail: OAuth 2.0 authorization-code grant with refresh_token, revocation endpoint, and
+    client_secret_basic / none token endpoint auth.
+  evidence: https://drforhair.co.kr/.well-known/oauth-authorization-server
+- id: rfc8414
+  conforms: true
+  detail: OAuth 2.0 Authorization Server Metadata served at the canonical well-known path.
+  evidence: https://drforhair.co.kr/.well-known/oauth-authorization-server
+- id: rfc9728
+  conforms: true
+  detail: OAuth 2.0 Protected Resource Metadata, naming the MCP endpoint as the resource and the
+    tenant host as its authorization server. This document is what made the MCP endpoint
+    discoverable at all.
+  evidence: https://drforhair.co.kr/.well-known/oauth-protected-resource
+- id: oidc
+  conforms: true
+  detail: OpenID Connect Discovery 1.0 with RS256 ID tokens, a JWKS endpoint, a userinfo endpoint
+    and public subject types.
+  evidence: https://drforhair.co.kr/.well-known/openid-configuration
+- id: rfc7636
+  conforms: true
+  detail: PKCE advertised with code_challenge_methods_supported [S256].
+  evidence: https://drforhair.co.kr/.well-known/openid-configuration
+- id: rfc9207
+  conforms: true
+  detail: authorization_response_iss_parameter_supported is true — the authorization server
+    identifies itself in the response, mitigating mix-up attacks.
+  evidence: https://drforhair.co.kr/.well-known/openid-configuration
+- id: mcp
+  conforms: true
+  version: '2025-06-18'
+  detail: Streamable-HTTP Model Context Protocol server. initialize, tools/list, resources/list
+    and prompts/list all answered; session negotiated via the mcp-session-id header.
+  evidence: https://drforhair2024.cafe24api.com/api/mcp
+- id: rfc9457
+  conforms: false
+  detail: Errors are a bare {"error":"<string>"} JSON object (observed on an unsessioned
+    tools/list, HTTP 400). Not application/problem+json.
+  evidence: https://drforhair2024.cafe24api.com/api/mcp
+- id: openapi
+  conforms: false
+  detail: No OpenAPI is published on any Wyatt-controlled host. See x-coverage.
+  evidence: https://drforhair.co.kr/openapi.json
+- id: asyncapi
+  conforms: false
+  detail: No event, streaming or webhook surface is published by Wyatt.
+  evidence: https://drforhair.co.kr/.well-known/api-catalog
+domain_standards:
+- id: ucp
+  name: Universal Commerce Protocol
+  conforms: partial
+  signature: >-
+    The authorization-server metadata declares UCP-namespaced shopping scopes verbatim:
+    dev.ucp.shopping.checkout:manage, dev.ucp.shopping.cart:manage, dev.ucp.shopping.order:read,
+    dev.ucp.shopping.catalog.search:read, dev.ucp.shopping.catalog.lookup:read. This is a
+    contract-level declaration of an agentic-commerce interoperability vocabulary, not a prose
+    claim on a marketing page.
+  evidence: https://drforhair.co.kr/.well-known/openid-configuration
+  qualification: >-
+    Marked `partial`, not `true`, for two measured reasons. First, /.well-known/ucp.json returns
+    404 on every Wyatt host and on the tenant API host, so the UCP discovery document itself is
+    not served. Second, the scopes that actually guard the live MCP resource are Cafe24's own
+    mall.read_customer_order / mall.write_customer_order, not the dev.ucp.* set — the UCP
+    vocabulary is advertised on the authorization server but is not what the resource enforces.
+    The `dev.` prefix on the namespace suggests a pre-release rollout.
+- id: acp
+  name: Agentic Commerce Protocol
+  conforms: false
+  evidence: https://drforhair.co.kr/.well-known/acp.json
+  detail: 404 on every host probed.
+certifications: []
+compliance_programs: []
+compliance_note: >-
+  No trust center, SOC 2, ISO 27001, PCI or ISMS-P certification page was found on any
+  Wyatt-controlled host. Korean e-commerce law disclosures (business registration 120-86-08810,
+  telecom sales report 2021-서울강남-02122) are published in the storefront footer, but those are
+  statutory business filings, not a published compliance program, so no Compliance pointer is
+  claimed.

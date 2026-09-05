@@ -1,0 +1,67 @@
+generated: '2026-09-04'
+method: probed
+source: https://drforhair.co.kr/.well-known/openid-configuration
+docs: https://developers.cafe24.com/app/front/app/develop/oauth
+note: >-
+  Derived entirely from the OIDC discovery document Wyatt's own domain serves, plus the RFC 9728
+  protected-resource document. There is no OpenAPI to read securitySchemes from — Wyatt publishes
+  none. The authorization server is Cafe24's, running under Wyatt's tenant
+  (drforhair2024.cafe24api.com); service_documentation in the discovery document points at
+  developers.cafe24.com, which is Cafe24's developer portal, not Wyatt's.
+operator: cafe24
+schemes:
+- id: oauth2_authorization_code
+  type: oauth2
+  flow: authorizationCode
+  authorization_url: https://drforhair2024.cafe24api.com/api/v2/oauth/authorize
+  token_url: https://drforhair2024.cafe24api.com/api/v2/oauth/token
+  revocation_url: https://drforhair2024.cafe24api.com/api/v2/oauth/revoke
+  refresh_supported: true
+  pkce: true
+  pkce_methods: [S256]
+  token_endpoint_auth_methods: [client_secret_basic, none]
+  response_types: [code]
+  response_modes: [query]
+  authorization_response_iss_parameter_supported: true
+  applies_to: https://drforhair2024.cafe24api.com/api/mcp
+- id: openid_connect
+  type: openIdConnect
+  openid_connect_url: https://drforhair.co.kr/.well-known/openid-configuration
+  issuer: https://drforhair2024.cafe24api.com
+  jwks_uri: https://drforhair2024.cafe24api.com/api/v2/.well-known/jwks.json
+  userinfo_endpoint: https://drforhair2024.cafe24api.com/api/v2/customers/userinfo
+  subject_types: [public]
+  id_token_signing_algs: [RS256]
+  claims:
+  - iss
+  - sub
+  - aud
+  - exp
+  - iat
+  - jti
+  - at_hash
+  - auth_time
+  - nonce
+  - amr
+  - mall.name
+  - mall.email
+  - mall.gender
+  - mall.birthdate
+  - mall.phone_number
+  - mall.address
+bearer:
+  methods_supported: [header]
+  source: https://drforhair.co.kr/.well-known/oauth-protected-resource
+api_keys: false
+mutual_tls: false
+anonymous_surface:
+  description: >-
+    MCP initialize and tools/list succeed with no credential once a session is established; every
+    tools/call requires a bearer token. Anonymous discovery, authenticated action.
+  verified: probed
+x-evidence:
+  fetched: '2026-09-04'
+  openid_configuration_status: 200
+  oauth_authorization_server_status: 200
+  oauth_protected_resource_status: 200
+  jwks_status: 200

@@ -1,0 +1,132 @@
+generated: '2026-09-04'
+method: derived
+source: mcp/wyatt-mcp.yml, well-known/wyatt-oauth-protected-resource.json, well-known/wyatt-openid-configuration.json
+note: >-
+  Derived from the live MCP tool schemas and the discovery documents. There is no OpenAPI and no
+  published developer documentation on any Wyatt host, so anything not observable in those two
+  sources is recorded as undocumented rather than guessed. Cafe24 publishes platform docs at
+  developers.cafe24.com, but those describe Cafe24's product, not Wyatt's storefront, and were not
+  used to fill gaps here.
+operator: cafe24
+auth_style:
+  scheme: OAuth 2.1 authorization code + PKCE (S256), bearer token in the Authorization header
+  anonymous_discovery: true
+  detail: initialize and tools/list answer without a credential; tools/call requires a token.
+  see: authentication/wyatt-authentication.yml
+transport:
+  protocol: Model Context Protocol, streamable HTTP
+  version: '2025-06-18'
+  session:
+    required: true
+    header: mcp-session-id
+    established_by: initialize
+    detail: A tools/list without a session returns HTTP 400 {"error":"Session ID required"}.
+idempotency:
+  coverage: none
+  supported: false
+  header: null
+  scope: []
+  detail: >-
+    No idempotency key, request-id or replay-protection mechanism is documented or advertised
+    anywhere on the surface. Neither of the two write tools (create-checkout-url,
+    cancel-unpaid-order) accepts a client-supplied key. create-checkout-url is naturally
+    low-risk on replay — it mints a URL rather than placing an order — but cancel-unpaid-order
+    has no replay guard beyond the target order already being cancelled.
+  evidence: mcp/wyatt-mcp-tools.json
+reversibility:
+  grade: verified
+  detail: >-
+    The surface has exactly one order-creating path and one reversal, and the reversal's window is
+    stated inside the tool's own description rather than in prose docs, which is why this grades
+    verified rather than documented.
+  write_surfaces:
+  - operation: create-checkout-url
+    kind: checkout-url-generation
+    consequence: >-
+      Generates a checkout URL for a product variant and quantity. It does NOT place an order or
+      move money; a human completes checkout in the browser. Nothing to reverse at this step.
+    reversal: na
+    window: na
+  - operation: cancel-unpaid-order
+    kind: reversal
+    reverses: an order placed through the storefront
+    reversal_operation: cancel-unpaid-order
+    window: >-
+      While the order remains in the pre-payment (입금 전) state. Stated by the tool's own
+      description: "입금 전 상태의 주문을 즉시 취소합니다" — cancels an order in the
+      before-payment state immediately. Once payment is received the tool no longer applies.
+    window_source: mcp/wyatt-mcp-tools.json (tool description, fetched 2026-09-04)
+    irreversible_after: payment received
+  not_stated: >-
+    No refund, return or post-payment cancellation tool is exposed on this surface, and no refund
+    window is published. An agent cannot reverse a PAID order here; that requires the storefront's
+    human customer-service channel (1670-5875, weekdays 09:00-17:00 KST). Recorded as absent —
+    Wyatt's storefront terms of service may state a statutory Korean withdrawal window, but that
+    is not asserted here because it was not read from a machine-readable source.
+dry_run_mode:
+  supported: false
+  detail: No preview, simulate or validate-only mode is exposed on any tool.
+pagination:
+  style: limit-offset
+  applies_to: [search-customer-orders]
+  params:
+    limit: {min: 1, max: 100, default: 10}
+    offset: {default: 0}
+  partial: >-
+    search-products accepts `limit` but exposes no offset or cursor, so its result set cannot be
+    paged past the first page.
+  response_fields: undocumented
+filtering:
+  search-products: [product_name, product_tag, price_min, price_max, sort, order]
+  search-customer-orders: [period_days]
+  detail: >-
+    search-customer-orders is bounded to a 1-90 day window with a 30-day default; there is no way
+    to reach an order older than 90 days through this surface.
+field_expansion:
+  supported: partial
+  detail: search-products-detail accepts variants_verbose (boolean) to expand each variant with
+    additional_amount and option_axes. No general sparse-fieldset or expand mechanism.
+multi_tenancy:
+  param: shop_no
+  default: 1
+  detail: Every order and product-detail tool accepts shop_no to address a specific storefront in
+    a multi-mall account. Wyatt's Dr.FORHAIR shop is shop_no 1.
+identifiers:
+  product_no: integer
+  variant_code: string
+  order_id: 'string, format YYYYMMDD-NNNNNNN (example given by the provider: 20260101-0000001)'
+versioning:
+  api_version: v2 (in the Cafe24 OAuth endpoint paths)
+  mcp_protocol_version: '2025-06-18'
+  policy: undocumented
+  detail: No version-negotiation, sunset or deprecation policy is published by Wyatt.
+error_envelope:
+  shape: '{"error": "<message>"}'
+  format: bare JSON, not RFC 9457 problem+json
+  observed:
+    request: tools/list without a session
+    status: 400
+    body: '{"error":"Session ID required"}'
+  jsonrpc_errors: not observed — no error-returning JSON-RPC call was made
+  see: errors/wyatt-problem-types.yml
+rate_limit_signaling:
+  headers: none observed
+  detail: No X-RateLimit-*, RateLimit-* or Retry-After header appeared on any response. See
+    rate-limits/wyatt-rate-limits.yml.
+tracing:
+  request_id_header: x-reqid
+  detail: >-
+    Responses carry x-reqid, x-hurl, x-via and x-cache headers from the Cafe24 edge (openresty /
+    magneto-edge-icn). These are edge-infrastructure headers rather than a documented tracing
+    contract, but x-reqid is the value to quote in a support request.
+localization:
+  tool_descriptions: Korean
+  catalog: Korean
+  detail: All six tool descriptions, all six prompts and the product catalog are Korean-language.
+cross_links:
+  authentication: authentication/wyatt-authentication.yml
+  scopes: scopes/wyatt-scopes.yml
+  errors: errors/wyatt-problem-types.yml
+  lifecycle: lifecycle/wyatt-lifecycle.yml
+  rate_limits: rate-limits/wyatt-rate-limits.yml
+  mcp: mcp/wyatt-mcp.yml
