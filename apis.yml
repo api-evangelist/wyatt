@@ -20,6 +20,17 @@ tags:
 - Company
 - Beauty
 - Personal Care
+- Hair Care
+- Consumer Products
+- E-Commerce
+- Retail
+- Agentic Commerce
+- MCP
+- South Korea
+tags_raw:
+- Company
+- Beauty
+- Personal Care
 - Haircare
 - Consumer Products
 - E-Commerce
@@ -51,6 +62,11 @@ apis:
     Cafe24's, provisioned per merchant on a tenant subdomain. Wyatt did not engineer this
     contract.
   tags:
+  - Agentic Commerce
+  - MCP
+  - E-Commerce
+  - Beauty
+  tags_raw:
   - Agentic Commerce
   - Model Context Protocol
   - E-Commerce
