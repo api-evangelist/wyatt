@@ -84,6 +84,9 @@ apis:
     url: data-model/wyatt-data-model.yml
   - type: ErrorCatalog
     url: errors/wyatt-problem-types.yml
+  x-surface: platform-generated
+  x-platform: cafe24
+  x-platform-surface: storefront-mcp
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
