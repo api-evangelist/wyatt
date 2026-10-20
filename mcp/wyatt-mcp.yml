@@ -49,6 +49,7 @@ introspection:
 tool_count: 6
 tools:
 - name: search-products
+  description: '상품을 검색하는 도구입니다. 상품명뿐 아니라 추천 상황(예: 계절, 스타일, 장소, 용도) 등을 함께 입력하면 보다 정교한 검색이 가능합니다.'
   category: catalog
   write: false
   summary: Search the storefront catalog by product name, with optional situational tag, price floor/ceiling,
@@ -63,8 +64,8 @@ tools:
   - sort
   - order
   - limit
-  description: '상품을 검색하는 도구입니다. 상품명뿐 아니라 추천 상황(예: 계절, 스타일, 장소, 용도) 등을 함께 입력하면 보다 정교한 검색이 가능합니다.'
 - name: search-products-detail
+  description: 상품번호에 해당하는 상품 상세를 검색합니다.
   category: catalog
   write: false
   summary: Retrieve the detail record for one product number, optionally expanding variants with per-option
@@ -75,8 +76,8 @@ tools:
   - product_no
   - shop_no
   - variants_verbose
-  description: 상품번호에 해당하는 상품 상세를 검색합니다.
 - name: create-checkout-url
+  description: 지정한 상품의 체크아웃 URL을 생성합니다.
   category: checkout
   write: true
   summary: Generate a checkout URL for a given product variant and quantity. Produces a URL for a human
@@ -89,8 +90,8 @@ tools:
   - product_no
   - variant_code
   - quantity
-  description: 지정한 상품의 체크아웃 URL을 생성합니다.
 - name: search-customer-orders
+  description: 고객의 주문 내역을 검색합니다. '내 주문 목록', '최근 구매 내역', '주문 확인해줘' 등의 요청에 사용합니다.
   category: orders
   write: false
   summary: List the authenticated customer's orders over a 1-90 day window with limit/offset paging.
@@ -100,8 +101,8 @@ tools:
   - limit
   - offset
   - shop_no
-  description: 고객의 주문 내역을 검색합니다. '내 주문 목록', '최근 구매 내역', '주문 확인해줘' 등의 요청에 사용합니다.
 - name: search-customer-order-detail
+  description: 특정 주문의 상세 정보를 조회합니다. '주문번호 20260101-0000001 상세 보여줘', '이 주문 자세히 알려줘' 등의 요청에 사용합니다.
   category: orders
   write: false
   summary: Retrieve one order by order_id (format YYYYMMDD-NNNNNNN).
@@ -110,8 +111,8 @@ tools:
   parameters:
   - order_id
   - shop_no
-  description: 특정 주문의 상세 정보를 조회합니다. '주문번호 20260101-0000001 상세 보여줘', '이 주문 자세히 알려줘' 등의 요청에 사용합니다.
 - name: cancel-unpaid-order
+  description: 입금 전 상태의 주문을 즉시 취소합니다.
   category: orders
   write: true
   reversal_of: create-checkout-url
@@ -121,7 +122,6 @@ tools:
   parameters:
   - order_id
   - shop_no
-  description: 입금 전 상태의 주문을 즉시 취소합니다.
 resources:
 - uri: ui://widget/product-list.html
   name: Product List Template
@@ -172,3 +172,4 @@ tool_quality:
   scored: false
   note: Facts from the saved tools/list capture (mcp_tool_quality.py); recorded, not scored. Checks learned
     from Glimind's agent-readiness audit.
+tools_count: 6
