@@ -64,5 +64,115 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Wyatt is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.nasdaqprivatemarket.com/
+Wyatt Corp. (주식회사 와이어트) is a South Korean beauty and personal-care company headquartered in Gangnam, Seoul. It owns and operates the Dr.FORHAIR scalp and hair-care brand — ranked first in the Korea Consumer Satisfaction Index shampoo category for twelve consecutive years — alongside the UNOVE and Tangle Angel brands, and it built and operated Kakao Hair Shop, the salon-booking service inside KakaoTalk. Wyatt is a consumer-products company rather than a software vendor: it publishes no developer portal, no public API program and no OpenAPI. Its only machine-readable, agent-callable surface is the Model Context Protocol endpoint attached to its Dr.FORHAIR direct-to-consumer storefront, which is operated on its behalf by the Cafe24 commerce platform and advertised from Wyatt's own domain via RFC 9728 protected-resource metadata.
+
+**Areas:** Company · Beauty · Personal Care · Hair Care · Consumer Products · E-Commerce · Retail · Agentic Commerce · MCP · South Korea
+
+## Wyatt on APIs.io
+
+Everything profiled for Wyatt is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/wyatt/](https://apis.io/providers/wyatt/)** — or go straight to one of the APIs or properties below.
+
+### APIs (1)
+
+- [Dr.FORHAIR Storefront MCP Server](https://apis.io/apis/wyatt/drforhair-storefront-mcp-server/) — A live, remotely-callable Model Context Protocol server for Wyatt's Dr.FORHAIR direct-to-consumer storefront. Six tools cover catalog search, product…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [Dr.FORHAIR Storefront MCP Server](https://apis.io/servers/wyatt/dr-forhair-storefront-mcp-server/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Wyatt Authentication](https://apis.io/security/wyatt/wyatt-authentication/)
+- [Wyatt Domain Security](https://apis.io/security/wyatt/wyatt-domain-security/)
+- [Wyatt Vulnerability Disclosure](https://apis.io/security/wyatt/wyatt-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Wyatt Scopes](https://apis.io/scopes/wyatt/wyatt-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Wyatt Plans Pricing](https://apis.io/plans/wyatt/wyatt-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Wyatt Rate Limits](https://apis.io/rate-limits/wyatt/wyatt-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://wyattcorp.com/)
+- [Sign up](https://drforhair.co.kr/member/join.html)
+- [Support](https://drforhair.co.kr/shopinfo/guide.html)
+- [Terms of service](https://drforhair.co.kr/member/agreement.html)
+- [Privacy policy](https://drforhair.co.kr/member/privacy.html)
+
+## API Evangelist rating
+
+**Kin Score 25.8** — emerging · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 1.9 |
+| Contract governance | 18.2 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 18.5 |
+| Access clarity | 34.2 |
+
+**Agent readiness 22.8** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | platform (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 40.2** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/wyatt/](https://apis.io/providers/wyatt/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Wyatt: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/wyatt/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
